@@ -79,12 +79,25 @@ class Note:
 
 notes = [note_from_freq(STANDARD_CHROMATIC[i]) for i in range(len(NOTES_NAMES))]
 
-chords = {}
-chords.update({chord.name: chord for chord in [note.major() for note in notes]})
-chords.update({chord.name: chord for chord in [note.major7() for note in notes]})
-chords.update({chord.name: chord for chord in [note.minor() for note in notes]})
-chords.update({chord.name: chord for chord in [note.minor7() for note in notes]})
-chords.update({chord.name: chord for chord in [note.dominant() for note in notes]})
+chords = {"init": [("major", {chord.name: chord for chord in [note.major() for note in notes]}),
+                   ("major7", {chord.name: chord for chord in [note.major7() for note in notes]}),
+                   ("minor", {chord.name: chord for chord in [note.minor() for note in notes]}),
+                   ("minor7", {chord.name: chord for chord in [note.minor7() for note in notes]}),
+                   ("dominant", {chord.name: chord for chord in [note.dominant() for note in notes]})]}
+
+
+# create a function to reduce namespace garbage
+def setup_chords(chords):
+    for chord_family_name, chord_family_dict in chords["init"]:
+        chords[chord_family_name] = argparse.Namespace(**chord_family_dict)
+        for chord_name in chord_family_dict:
+            chords[chord_name] = chord_family_dict[chord_name]
+    chords.pop("init")
+    return chords
+
+
+chords = setup_chords(chords)
 
 notes = argparse.Namespace(**{note.name: note for note in notes})
+
 chords = argparse.Namespace(**chords)

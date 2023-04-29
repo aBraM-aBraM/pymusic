@@ -70,6 +70,12 @@ class Note:
     def dominant(self) -> Chord:
         return Chord(f"{self.name}7", self.get_chord_notes([0, 4, 7, 10]))
 
+    def half_diminished(self) -> Chord:
+        return Chord(f"{self.name}m7b5", self.get_chord_notes([0, 3, 6, 10]))
+
+    def diminished(self) -> Chord:
+        return Chord(f"{self.name}dim7", self.get_chord_notes([0, 3, 6, 9]))
+
     def octave_up(self):
         self.freq *= 2
 
@@ -83,7 +89,10 @@ chords = {"init": [("major", {chord.name: chord for chord in [note.major() for n
                    ("major7", {chord.name: chord for chord in [note.major7() for note in notes]}),
                    ("minor", {chord.name: chord for chord in [note.minor() for note in notes]}),
                    ("minor7", {chord.name: chord for chord in [note.minor7() for note in notes]}),
-                   ("dominant", {chord.name: chord for chord in [note.dominant() for note in notes]})]}
+                   ("dominant", {chord.name: chord for chord in [note.dominant() for note in notes]}),
+                   ("half_diminished", {chord.name: chord for chord in [note.half_diminished() for note in notes]}),
+                   ("diminished", {chord.name: chord for chord in [note.diminished() for note in notes]}),
+                   ]}
 
 
 # create a function to reduce namespace garbage
